@@ -1,5 +1,7 @@
 package com.havana.games.triovision.model;
 
+import java.util.Arrays;
+
 import com.havana.games.triovision.exceptions.InvalidMoveException;
 
 public class Board {
@@ -9,6 +11,26 @@ public class Board {
 	public Board() {
 		boardRepresentation = new Pawn[4][4];
 		initialize();
+	}
+	
+	private Board(Board boardCopy, int x1, int y1, int x2, int y2) {
+		this.boardRepresentation = boardCopy.getBoardCopy();
+		
+		Pawn temp = boardRepresentation[x1][y1];
+		boardRepresentation[x1][y1] = boardRepresentation[x2][y2];
+		boardRepresentation[x2][y2] = temp;
+	}
+
+	private Pawn[][] getBoardCopy() {
+		Pawn[][] boardCopy = new Pawn[4][4];
+		
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				boardCopy[i][j] = boardRepresentation[i][j];
+			}
+		}
+		
+		return boardCopy;
 	}
 	
 	private void initialize() {
@@ -48,7 +70,21 @@ public class Board {
 			throw new InvalidMoveException("You can not swap two empty tiles. You can, however, choose not to make a move.");
 		}
 		
-		return new Board();
+		return new Board(this, x1, y1, x2, y2);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		
+		Board that = (Board)obj;
+		
+		return Arrays.deepEquals(this.boardRepresentation, that.boardRepresentation);
+	}
+
+	public boolean matches(Card card) {
+		return true;
+	}
 }
