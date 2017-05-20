@@ -53,7 +53,6 @@ public class Game {
 	}
 
 	public List<Card> getOpenCards() {
-		// TODO Auto-generated method stub
 		return openCards;
 	}
 
@@ -66,7 +65,13 @@ public class Game {
 		}
 	}
 
-	public boolean makeMoveForPlayer(int i, Card card, Board newBoard) {
+	public boolean makeMoveForPlayer(int i, Card card, Board newBoard) {		
+		if (newBoard.matches(card)) {
+			Player player = getPlayer(i);
+			player.addWonCard(card);
+			return true;
+		}
+		
 		return false;
 	}
 

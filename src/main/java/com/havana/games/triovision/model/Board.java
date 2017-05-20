@@ -84,7 +84,68 @@ public class Board {
 		return Arrays.deepEquals(this.boardRepresentation, that.boardRepresentation);
 	}
 
-	public boolean matches(Card card) {
+	public boolean matches(Card card) {	
+
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 3; j++) {
+				Pawn[][] cardSliceFromBoard = getCardSlice(i, j);
+				
+				boolean matches = cardMatchesCardSlice(card, cardSliceFromBoard);
+				
+				if (matches) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	private boolean cardMatchesCardSlice(Card card, Pawn[][] cardSliceFromBoard) {
+		Pawn[][] cardInfo = card.getCardInfo();
+		
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 2; j++) {
+				if (cardInfo[i][j] != cardSliceFromBoard[i][j]) {
+					return false;
+				}
+			}
+		}
+		
 		return true;
+	}
+
+	private Pawn[][] getCardSlice(int rowOffset, int columnOffset) {
+		Pawn[][] cardSlice = new Pawn[3][2];
+		
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 2; j++) {
+				cardSlice[i][j] = boardRepresentation[i + rowOffset][j + columnOffset];
+			}
+		}
+		
+		return cardSlice;
+	}
+	
+	@SuppressWarnings("unused")
+	private void printSlice(Pawn[][] cardSlice) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 2; j++) {
+				System.out.print(cardSlice[i][j] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
+	
+	@SuppressWarnings("unused")
+	private void printBoard() {
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				System.out.print(boardRepresentation[i][j] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 }

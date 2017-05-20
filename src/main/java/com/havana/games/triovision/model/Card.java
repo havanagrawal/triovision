@@ -4,11 +4,7 @@ public class Card {
 	
 	private Pawn[][] cardInfo;
 	
-	private Card() {
-		
-	}
-	
-	private Card(Pawn[][] cardInfo) {
+	public Card(Pawn[][] cardInfo) {
 		this.cardInfo = getCardInfoCopy(cardInfo);
 	}
 
@@ -24,6 +20,10 @@ public class Card {
 		return cardInfoCopy;
 	}
 	
+	public Pawn[][] getCardInfo() {
+		return getCardInfoCopy(cardInfo);
+	}
+	
 	public static class CardBuilder {
 
 		private Pawn[][] cardInfo = new Pawn[3][2];
@@ -37,7 +37,11 @@ public class Card {
 		
 		
 		public CardBuilder() {
-			
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 2; j++) {
+					cardInfo[i][j] = Pawn.EMPTY;
+				}
+			}
 		}
 		
 		public CardBuilder topLeft(Pawn pawn) {
@@ -70,7 +74,7 @@ public class Card {
 			return this;
 		}
 		
-		public Card build() {
+		public Card build() {		
 			return new Card(cardInfo);
 		}
 	}
