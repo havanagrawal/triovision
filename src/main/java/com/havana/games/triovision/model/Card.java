@@ -1,13 +1,33 @@
 package com.havana.games.triovision.model;
 
+import java.util.Arrays;
+
+import com.havana.games.triovision.exceptions.InvalidCardException;
+
 public class Card {
 	
 	private Pawn[][] cardInfo;
 	
 	public Card(Pawn[][] cardInfo) {
 		this.cardInfo = getCardInfoCopy(cardInfo);
+		validate();
 	}
 
+	private void validate() {
+		if (!isValid()) {
+			if (getNoOfNulls() > 0) {
+				throw new InvalidCardException("There are null values on the Card. This should never happen!");					
+			}
+			
+			int noOfEmptyTiles = getNoOfEmptyTiles(); 
+			
+			if (noOfEmptyTiles != 3) {
+				throw new InvalidCardException("Expected 3 empty tiles on the card, found " + noOfEmptyTiles);
+			}
+			
+		}
+	}
+	
 	private Pawn[][] getCardInfoCopy(Pawn[][] cardInfo) {
 		Pawn cardInfoCopy[][] = new Pawn[3][2];
 		
@@ -75,11 +95,52 @@ public class Card {
 		}
 		
 		public Card build() {		
-			return new Card(cardInfo);
+			Card card = new Card(cardInfo);
+			
+			return card;
 		}
 	}
 
 	public static CardBuilder builder() {
 		return new CardBuilder();
 	}	
+	
+	private boolean isValid() {		
+		boolean noNulls = getNoOfNulls() == 0;
+		boolean hasThreeEmptyTiles = getNoOfEmptyTiles() == 3; 
+		return noNulls && hasThreeEmptyTiles;
+	}
+	
+	private int getNoOfNulls() {
+		return countInstancesOf(null);
+	}
+	
+	private int getNoOfEmptyTiles() {
+		return countInstancesOf(Pawn.EMPTY);
+	}
+	
+	private int countInstancesOf(Pawn pawn) {
+		int count = 0;
+		
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 2; j++) {
+				if (cardInfo[i][j] == pawn) {
+					count++;
+				}
+			}
+		}
+		
+		return count;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		
+		Card that = (Card)obj;
+		
+		return Arrays.deepEquals(this.cardInfo, that.cardInfo);
+	}
 }
