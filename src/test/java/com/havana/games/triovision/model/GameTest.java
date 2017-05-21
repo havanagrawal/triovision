@@ -203,4 +203,19 @@ public class GameTest {
 		assertThat(moveMade, is(false));
 		assertTrue(game.getOpenCards().contains(card));
 	}
+	
+	@Test
+	public void testOpenCardIsReplacedAfterOneCorrectMove() {
+		game.start();
+		
+		Card card = game.getOpenCards().get(0);
+		
+		Board moveMadeBoard = mock(Board.class);
+		when(moveMadeBoard.matches(card)).thenReturn(true);
+		
+		boolean moveMade = game.makeMoveForPlayer(1, card, moveMadeBoard);
+		
+		assertThat(moveMade, is(true));
+		assertThat(game.getOpenCards().size(), is(12));
+	}
 }
