@@ -37,4 +37,24 @@ public class CardTest {
 		Card.builder().topLeft(Pawn.RED).bottomRight(Pawn.GREEN).build();
 	}
 
+	@Test(expected = InvalidCardException.class)
+	public void testInvalidCardWithNullsThrowsException() {
+		Card.builder().topLeft(null).bottomRight(Pawn.GREEN).middleLeft(Pawn.RED).build();
+	}
+	
+	@Test(expected = InvalidCardException.class)
+	public void testInvalidCardWithTwoTopsThrowsException() {
+		Card.builder().topLeft(Pawn.RED).topRight(Pawn.YELLOW).bottomRight(Pawn.GREEN).build();
+	}
+	
+	@Test(expected = InvalidCardException.class)
+	public void testInvalidCardWithTwoMiddlesThrowsException() {
+		Card.builder().topLeft(Pawn.RED).middleLeft(Pawn.GREEN).middleRight(Pawn.YELLOW).build();
+	}
+	
+	@Test(expected = InvalidCardException.class)
+	public void testInvalidCardWithTwoBottomsThrowsException() {
+		Card.builder().topLeft(Pawn.RED).bottomLeft(Pawn.GREEN).bottomRight(Pawn.YELLOW).build();
+	}
+	
 }

@@ -27,14 +27,14 @@ public class CardLoaderTest {
 	
 	@Test
 	public void testCardLoadedfromValidStringIsNotNull() {
-		Card card = CardLoader.fromString("- B, Y -, Y -");
+		Card card = CardLoader.fromString("- B, G -, Y -");
 		
 		assertThat(card, is(notNullValue()));
 	}
 	
 	@Test
 	public void testCardLoadedfromValidStringIsCorrect() {
-		Card card = CardLoader.fromString("- B, Y -, Y -");
+		Card card = CardLoader.fromString("- B, Y -, R -");
 		
 		assertThat(card, is(notNullValue()));
 		
@@ -42,7 +42,7 @@ public class CardLoaderTest {
 		Pawn[][] expected = {
 					{Pawn.EMPTY, Pawn.BLUE}, 
 					{Pawn.YELLOW, Pawn.EMPTY},
-					{Pawn.YELLOW, Pawn.EMPTY}};
+					{Pawn.RED, Pawn.EMPTY}};
 		
 		assertTrue(Arrays.deepEquals(cardInfo, expected));
 	}

@@ -6,11 +6,12 @@ import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class GameTest {
@@ -177,15 +178,11 @@ public class GameTest {
 
 	@Test
 	public void testCorrectMoveOnBehalfOfPlayerRemovesCardFromOpenCards() {
-		Board board = game.getBoard();
-		Card card = Card.builder()
-				.topRight(Pawn.BLUE)
-				.middleRight(Pawn.YELLOW)
-				.bottomLeft(Pawn.YELLOW)
-				.build();
+		game.start();
+		Card card = game.getOpenCards().get(0);
 		
-		// Moving the top left yellow pawn one square to the right makes the card match
-		Board moveMadeBoard = board.swap(1, 0, 1, 1);
+		Board moveMadeBoard = mock(Board.class);
+		when(moveMadeBoard.matches(card)).thenReturn(true);
 		
 		boolean moveMade = game.makeMoveForPlayer(1, card, moveMadeBoard);
 		
@@ -194,17 +191,12 @@ public class GameTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testInvalidMoveOnBehalfOfPlayerRetainsCardInOpenCards() {
-		Board board = game.getBoard();
-		Card card = Card.builder()
-				.topRight(Pawn.BLUE)
-				.middleRight(Pawn.YELLOW)
-				.bottomLeft(Pawn.YELLOW)
-				.build();
+		game.start();
+		Card card = game.getOpenCards().get(0);
 		
-		// Moving the top left blue pawn one square below does not make the card match
-		Board moveMadeBoard = board.swap(0, 1, 1, 1);
+		Board moveMadeBoard = mock(Board.class);
+		when(moveMadeBoard.matches(card)).thenReturn(false);
 		
 		boolean moveMade = game.makeMoveForPlayer(1, card, moveMadeBoard);
 		

@@ -8,23 +8,32 @@ public class Card {
 	
 	private Pawn[][] cardInfo;
 	
+	private static final int TOP = 0;
+	private static final int MIDDLE = 1;
+	private static final int BOTTOM = 2;
+	
+	private static final int LEFT = 0;
+	private static final int RIGHT = 1;
+	
 	public Card(Pawn[][] cardInfo) {
 		this.cardInfo = getCardInfoCopy(cardInfo);
 		validate();
 	}
 
 	private void validate() {
-		if (!isValid()) {
-			if (getNoOfNulls() > 0) {
-				throw new InvalidCardException("There are null values on the Card. This should never happen!");					
-			}
-			
-			int noOfEmptyTiles = getNoOfEmptyTiles(); 
-			
-			if (noOfEmptyTiles != 3) {
-				throw new InvalidCardException("Expected 3 empty tiles on the card, found " + noOfEmptyTiles);
-			}
-			
+		
+		boolean hasNulls = getNoOfNulls() != 0;
+		if (hasNulls) {
+			throw new InvalidCardException("There are null values on the Card. This should never happen!");					
+		}
+		
+		int noOfEmptyTiles = getNoOfEmptyTiles(); 
+		if (noOfEmptyTiles != 3) {
+			throw new InvalidCardException("Expected 3 empty tiles on the card, found " + noOfEmptyTiles);
+		}
+		
+		if (!topMiddleBottomAreSetCorrectly()) {
+			throw new InvalidCardException("Only one value can be set on the same horizontal line on a card.");
 		}
 	}
 	
@@ -46,15 +55,7 @@ public class Card {
 	
 	public static class CardBuilder {
 
-		private Pawn[][] cardInfo = new Pawn[3][2];
-		
-		private static final int TOP = 0;
-		private static final int MIDDLE = 1;
-		private static final int BOTTOM = 2;
-		
-		private static final int LEFT = 0;
-		private static final int RIGHT = 1;
-		
+		private Pawn[][] cardInfo = new Pawn[3][2];		
 		
 		public CardBuilder() {
 			for (int i = 0; i < 3; i++) {
@@ -105,10 +106,14 @@ public class Card {
 		return new CardBuilder();
 	}	
 	
-	private boolean isValid() {		
-		boolean noNulls = getNoOfNulls() == 0;
-		boolean hasThreeEmptyTiles = getNoOfEmptyTiles() == 3; 
-		return noNulls && hasThreeEmptyTiles;
+	private boolean topMiddleBottomAreSetCorrectly() {
+		boolean hasSingleTop = cardInfo[TOP][LEFT] == Pawn.EMPTY || cardInfo[TOP][RIGHT] == Pawn.EMPTY;
+		boolean hasSingleMiddle = cardInfo[MIDDLE][LEFT] == Pawn.EMPTY || cardInfo[MIDDLE][RIGHT] == Pawn.EMPTY;
+		boolean hasSingleBottom = cardInfo[BOTTOM][LEFT] == Pawn.EMPTY || cardInfo[BOTTOM][RIGHT] == Pawn.EMPTY;
+		
+		boolean topMiddleBottomValid = hasSingleTop && hasSingleMiddle && hasSingleBottom; 
+		
+		return topMiddleBottomValid;
 	}
 	
 	private int getNoOfNulls() {

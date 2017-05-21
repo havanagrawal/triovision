@@ -69,6 +69,7 @@ public class Game {
 		if (newBoard.matches(card)) {
 			Player player = getPlayer(i);
 			player.addWonCard(card);
+			openCards.remove(card);
 			return true;
 		}
 		

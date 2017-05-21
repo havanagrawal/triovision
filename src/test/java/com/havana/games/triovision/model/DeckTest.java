@@ -6,6 +6,9 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,10 +23,13 @@ public class DeckTest {
 	}
 	
 	@Test
-	public void testGetRandomCardReturnsNotNullCard() {
-		Card c = deck.getNextCard();
+	public void testGetNextCardReturnsNotNullCard() {
+		int size = deck.size();
 		
-		assertThat(c, is(notNullValue()));
+		for (int i = 0; i < size; i++) {
+			Card c = deck.getNextCard();
+			assertThat(c, is(notNullValue()));			
+		}
 	}
 	
 	@Test
@@ -41,7 +47,6 @@ public class DeckTest {
 	
 	@Test(expected = NoSuchElementException.class)
 	public void testGettingCardFromEmptyDeckThrowsException() {
-		
 		int size = deck.size();
 		
 		for (int i = 0; i < size; i++) {
@@ -50,6 +55,18 @@ public class DeckTest {
 		
 		assertTrue(deck.isEmpty());
 		deck.getNextCard();
+	}
+	
+	@Test
+	public void testDeckHasUniqueCards() {
+		int size = deck.size();
+		
+		Set<Card> cards = Stream.generate(deck::getNextCard)
+								.limit(size)
+								.collect(Collectors.toSet());
+		
+		assertTrue(deck.isEmpty());
+		assertThat(cards.size(), is(size));
 	}
 
 }
