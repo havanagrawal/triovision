@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,11 +17,13 @@ public class Deck {
 
 	private Deque<Card> cards;
 	
-	private int maxSize = 60;
+	private final int maxSize = 60;
 	
 	public Deck() {
-		List<Card> cardList = Stream.generate(this::getRandomCard).limit(maxSize).collect(Collectors.toList());
-		cards = new ArrayDeque<>(cardList);
+		
+		Set<Card> cardSet = Stream.generate(this::getRandomCard).limit(maxSize).collect(Collectors.toSet());
+
+		cards = new ArrayDeque<>(cardSet);
 	}
 	
 	public Card getNextCard() {
