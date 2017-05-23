@@ -12,7 +12,8 @@ public class Game {
 	private Deck deck;
 
 	List<Card> openCards;
-	private boolean started;
+	private boolean started = false;
+	private boolean ended = false;
 	
 	public Game(int noOfPlayers) {
 		if (noOfPlayers < 2) {
@@ -53,7 +54,7 @@ public class Game {
 	}
 
 	public List<Card> getOpenCards() {
-		return openCards;
+		return new ArrayList<>(openCards);
 	}
 
 	public void start() {
@@ -65,15 +66,32 @@ public class Game {
 		}
 	}
 
-	public boolean makeMoveForPlayer(int i, Card card, Board newBoard) {		
-		if (newBoard.matches(card)) {
-			Player player = getPlayer(i);
-			player.addWonCard(card);
-			openCards.remove(card);
-			return true;
+	public boolean hasEnded() {
+		return ended;
+	}
+	
+	public boolean makeMoveForPlayer(int i, Card card, Board newBoard) {	
+		
+		if (ended) {
+			return false;
 		}
 		
-		return false;
+		if (!newBoard.matches(card)) {
+			return false;
+		}
+		
+		Player player = getPlayer(i);
+		player.addWonCard(card);
+		openCards.remove(card);
+		
+		if (!deck.isEmpty()) {
+			openCards.add(deck.getNextCard());
+		}
+		else if (openCards.isEmpty()) {
+			ended = true;
+		}
+		
+		return true;
 	}
-
+	
 }
