@@ -52,12 +52,23 @@ public class CardAndBoardMatcherTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testCardMatchesInitialConfigurationRotatedClockwiseOnce() {
 		Card card = Card.builder()
 				.topLeft(Pawn.YELLOW)
 				.middleRight(Pawn.BLUE)
 				.bottomRight(Pawn.BLUE)
+				.build();
+		
+		assertTrue(board.matches(card));
+	}
+	
+	@Test
+	@Ignore
+	public void testCardMatchesInitialConfigurationRotatedClockwiseTwice() {
+		Card card = Card.builder()
+				.topRight(Pawn.YELLOW)
+				.middleRight(Pawn.YELLOW)
+				.bottomLeft(Pawn.BLUE)
 				.build();
 		
 		assertTrue(board.matches(card));

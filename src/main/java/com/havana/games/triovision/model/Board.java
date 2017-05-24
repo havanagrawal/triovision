@@ -86,21 +86,46 @@ public class Board {
 
 	public boolean matches(Card card) {	
 
+		Pawn[][] regularOrientation = this.boardRepresentation;  
+		if (matches(regularOrientation, card)) {
+			return true;
+		}
+		
+		Pawn[][] rotatedOnce = rotateClockwise(regularOrientation);
+		if (matches(rotatedOnce, card)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean matches(Pawn[][] board, Card card) {
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 3; j++) {
-				Pawn[][] cardSliceFromBoard = getCardSlice(i, j);
+				Pawn[][] cardSliceFromBoard = getCardSlice(board, i, j);
 				
 				boolean matches = cardMatchesCardSlice(card, cardSliceFromBoard);
-				
+				 
 				if (matches) {
 					return true;
 				}
 			}
 		}
-		
 		return false;
 	}
 
+	private Pawn[][] rotateClockwise(Pawn[][] currentBoard) {
+		Pawn[][] rotated = new Pawn[4][4];
+		
+		for (int r = 0; r < 4; r++) {
+			for (int c = 0; c < 4; c++) {
+				rotated[c][4 - 1 - r] = currentBoard[r][c];
+			}
+		}
+		
+		return rotated;
+	}
+	
 	private boolean cardMatchesCardSlice(Card card, Pawn[][] cardSliceFromBoard) {
 		Pawn[][] cardInfo = card.getCardInfo();
 		
@@ -115,12 +140,12 @@ public class Board {
 		return true;
 	}
 
-	private Pawn[][] getCardSlice(int rowOffset, int columnOffset) {
+	private Pawn[][] getCardSlice(Pawn[][] currentBoard, int rowOffset, int columnOffset) {
 		Pawn[][] cardSlice = new Pawn[3][2];
 		
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 2; j++) {
-				cardSlice[i][j] = boardRepresentation[i + rowOffset][j + columnOffset];
+				cardSlice[i][j] = currentBoard[i + rowOffset][j + columnOffset];
 			}
 		}
 		
