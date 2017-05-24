@@ -19,7 +19,8 @@ public class CardAndBoardMatcherTest {
 	@Test
 	public void testCardMatchesInitialLeftSideConfiguration() {
 		
-		Card card = Card.builder().topRight(Pawn.BLUE)
+		Card card = Card.builder()
+				.topRight(Pawn.BLUE)
 				.middleLeft(Pawn.YELLOW)
 				.bottomLeft(Pawn.YELLOW)
 				.build();
@@ -53,7 +54,11 @@ public class CardAndBoardMatcherTest {
 	@Test
 	@Ignore
 	public void testCardMatchesInitialConfigurationRotatedClockwiseOnce() {
-		Card card = Card.builder().topLeft(Pawn.YELLOW).middleRight(Pawn.BLUE).bottomRight(Pawn.BLUE).build();
+		Card card = Card.builder()
+				.topLeft(Pawn.YELLOW)
+				.middleRight(Pawn.BLUE)
+				.bottomRight(Pawn.BLUE)
+				.build();
 		
 		assertTrue(board.matches(card));
 	}
