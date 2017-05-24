@@ -1,4 +1,4 @@
-package com.havana.games.triovision.cardloader;
+package com.havana.games.triovision.exceptions;
 
 public class MalformedCardException extends RuntimeException {
 	

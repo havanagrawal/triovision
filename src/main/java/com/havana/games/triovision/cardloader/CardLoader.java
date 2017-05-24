@@ -1,5 +1,6 @@
 package com.havana.games.triovision.cardloader;
 
+import com.havana.games.triovision.exceptions.MalformedCardException;
 import com.havana.games.triovision.model.Card;
 import com.havana.games.triovision.model.Pawn;
 
