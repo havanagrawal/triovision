@@ -72,5 +72,17 @@ public class CardAndBoardMatcherTest {
 		
 		assertTrue(board.matches(card));
 	}
+	
+	@Test
+	@Ignore
+	public void testCardMatchesInitialConfigurationRotatedClockwiseThrice() {
+		Card card = Card.builder()
+				.topLeft(Pawn.RED)
+				.middleRight(Pawn.GREEN)
+				.bottomRight(Pawn.GREEN)
+				.build();
+		
+		assertTrue(board.matches(card));
+	}
 
 }
