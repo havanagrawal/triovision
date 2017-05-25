@@ -63,7 +63,6 @@ public class CardAndBoardMatcherTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testCardMatchesInitialConfigurationRotatedClockwiseTwice() {
 		Card card = Card.builder()
 				.topRight(Pawn.YELLOW)

@@ -96,6 +96,11 @@ public class Board {
 			return true;
 		}
 		
+		Pawn[][] rotatedTwice = rotateClockwise(rotatedOnce);
+		if (matches(rotatedTwice, card)) {
+			return true;
+		}
+		
 		return false;
 	}
 	
