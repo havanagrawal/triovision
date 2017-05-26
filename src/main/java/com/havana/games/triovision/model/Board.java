@@ -86,24 +86,13 @@ public class Board {
 
 	public boolean matches(Card card) {	
 
-		Pawn[][] regularOrientation = this.boardRepresentation;  
-		if (matches(regularOrientation, card)) {
-			return true;
-		}
+		Pawn[][] orientation = this.boardRepresentation;  
 		
-		Pawn[][] rotatedOnce = rotateClockwise(regularOrientation);
-		if (matches(rotatedOnce, card)) {
-			return true;
-		}
-		
-		Pawn[][] rotatedTwice = rotateClockwise(rotatedOnce);
-		if (matches(rotatedTwice, card)) {
-			return true;
-		}
-		
-		Pawn[][] rotatedThrice = rotateClockwise(rotatedTwice);
-		if (matches(rotatedThrice, card)) {
-			return true;
+		for (int noOfClockwiseTurns = 0; noOfClockwiseTurns < 4; noOfClockwiseTurns++) {
+			if (matches(orientation, card)) {
+				return true;
+			}
+			orientation = rotateClockwise(orientation);
 		}
 		
 		return false;
