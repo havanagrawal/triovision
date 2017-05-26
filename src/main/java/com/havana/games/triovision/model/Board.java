@@ -101,6 +101,11 @@ public class Board {
 			return true;
 		}
 		
+		Pawn[][] rotatedThrice = rotateClockwise(rotatedTwice);
+		if (matches(rotatedThrice, card)) {
+			return true;
+		}
+		
 		return false;
 	}
 	
