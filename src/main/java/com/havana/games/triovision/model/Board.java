@@ -6,7 +6,7 @@ import com.havana.games.triovision.exceptions.InvalidMoveException;
 
 public class Board {
 
-	private static final int BOARD_SIZE= 4; //Based on the fact that the board is square!
+	private static final int BOARD_SIZE = 4; //Based on the fact that the board is square!
 
 	private Pawn[][] boardRepresentation;
 	
