@@ -15,9 +15,8 @@ public class Card {
 	private static final int LEFT = 0;
 	private static final int RIGHT = 1;
 
-	private final static int cardRowSize = 3;
-	private final static int cardColSize = 2;
-	private final static int numberOfEmptyTiles = 3;
+	private final static int CARD_NUM_OF_ROWS = 3;
+	private final static int CARD_NUM_OF_COLS = 2;
 	
 	public Card(Pawn[][] cardInfo) {
 		this.cardInfo = getCardInfoCopy(cardInfo);
@@ -26,14 +25,15 @@ public class Card {
 
 	private void validate() {
 		
+		final int EXPECTED_NUMBER_OF_EMPTY_TILES = 3;
 		boolean hasNulls = getNoOfNulls() != 0;
 		if (hasNulls) {
 			throw new InvalidCardException("There are null values on the Card. This should never happen!");					
 		}
 		
 		int noOfEmptyTiles = getNoOfEmptyTiles(); 
-		if (noOfEmptyTiles != numberOfEmptyTiles) {
-			throw new InvalidCardException("Expected " + numberOfEmptyTiles + " empty tiles on the card, found " + noOfEmptyTiles);
+		if (noOfEmptyTiles != EXPECTED_NUMBER_OF_EMPTY_TILES) {
+			throw new InvalidCardException("Expected " + EXPECTED_NUMBER_OF_EMPTY_TILES + " empty tiles on the card, found " + noOfEmptyTiles);
 		}
 		
 		if (!topMiddleBottomAreSetCorrectly()) {
@@ -42,10 +42,10 @@ public class Card {
 	}
 	
 	private Pawn[][] getCardInfoCopy(Pawn[][] cardInfo) {
-		Pawn cardInfoCopy[][] = new Pawn[cardRowSize][cardColSize];
+		Pawn cardInfoCopy[][] = new Pawn[CARD_NUM_OF_ROWS][CARD_NUM_OF_COLS];
 		
-		for (int i = 0; i < cardRowSize; i++) {
-			for (int j = 0; j < cardColSize; j++) {
+		for (int i = 0; i < CARD_NUM_OF_ROWS; i++) {
+			for (int j = 0; j < CARD_NUM_OF_COLS; j++) {
 				cardInfoCopy[i][j] = cardInfo[i][j];
 			}
 		}
@@ -59,11 +59,11 @@ public class Card {
 	
 	public static class CardBuilder {
 
-		private Pawn[][] cardInfo = new Pawn[cardRowSize][cardColSize];		
+		private Pawn[][] cardInfo = new Pawn[CARD_NUM_OF_ROWS][CARD_NUM_OF_COLS];		
 		
 		public CardBuilder() {
-			for (int i = 0; i < cardRowSize; i++) {
-				for (int j = 0; j < cardColSize; j++) {
+			for (int i = 0; i < CARD_NUM_OF_ROWS; i++) {
+				for (int j = 0; j < CARD_NUM_OF_COLS; j++) {
 					cardInfo[i][j] = Pawn.EMPTY;
 				}
 			}
@@ -131,8 +131,8 @@ public class Card {
 	private int countInstancesOf(Pawn pawn) {
 		int count = 0;
 		
-		for (int i = 0; i < cardRowSize; i++) {
-			for (int j = 0; j < cardColSize; j++) {
+		for (int i = 0; i < CARD_NUM_OF_ROWS; i++) {
+			for (int j = 0; j < CARD_NUM_OF_COLS; j++) {
 				if (cardInfo[i][j] == pawn) {
 					count++;
 				}
