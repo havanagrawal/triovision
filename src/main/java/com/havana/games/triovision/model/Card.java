@@ -25,15 +25,15 @@ public class Card {
 
 	private void validate() {
 		
-		final int EXPECTED_NUMBER_OF_EMPTY_TILES = 3;
+		final int expectedNumberOfEmptyTiles = 3;
 		boolean hasNulls = getNoOfNulls() != 0;
 		if (hasNulls) {
 			throw new InvalidCardException("There are null values on the Card. This should never happen!");					
 		}
 		
 		int noOfEmptyTiles = getNoOfEmptyTiles(); 
-		if (noOfEmptyTiles != EXPECTED_NUMBER_OF_EMPTY_TILES) {
-			throw new InvalidCardException("Expected " + EXPECTED_NUMBER_OF_EMPTY_TILES + " empty tiles on the card, found " + noOfEmptyTiles);
+		if (noOfEmptyTiles != expectedNumberOfEmptyTiles) {
+			throw new InvalidCardException("Expected " + expectedNumberOfEmptyTiles + " empty tiles on the card, found " + noOfEmptyTiles);
 		}
 		
 		if (!topMiddleBottomAreSetCorrectly()) {
