@@ -90,7 +90,7 @@ public class Game {
 		Card card = move.getCard();
 		Player player = move.getPlayer();
 		
-		if (!players.contains(player)) {
+		if (!isPlayerPartOfThisGame(player)) {
 			throw new InvalidPlayerException("Player " + player + " does not seem to be a valid player in this game!");
 		}
 		
@@ -109,6 +109,10 @@ public class Game {
 		}
 		
 		return true;
+	}
+	
+	private boolean isPlayerPartOfThisGame(Player player) {
+		return players.contains(player);
 	}
 	
 }
