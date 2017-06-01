@@ -3,6 +3,8 @@ package com.havana.games.triovision.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.havana.games.triovision.exceptions.InvalidPlayerException;
+
 public class Game {
 
 	private final int noOfPlayers;
@@ -87,6 +89,10 @@ public class Game {
 		Board newBoard = board.swap(move.fromX(), move.fromY(), move.toX(), move.toY());
 		Card card = move.getCard();
 		Player player = move.getPlayer();
+		
+		if (!players.contains(player)) {
+			throw new InvalidPlayerException("Player " + player + " does not seem to be a valid player in this game!");
+		}
 		
 		if (!newBoard.matches(card)) {
 			return false;

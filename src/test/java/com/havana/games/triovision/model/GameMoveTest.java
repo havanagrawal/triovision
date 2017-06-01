@@ -11,6 +11,8 @@ import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.havana.games.triovision.exceptions.InvalidPlayerException;
+
 public class GameMoveTest {
 	
 	private Game game;
@@ -35,6 +37,23 @@ public class GameMoveTest {
 		game = new Game(board, deck, openCards, players);
 	}
 	
+	@Test(expected = InvalidPlayerException.class)
+	public void testOutsidePlayerCannotMakeMove() {
+		
+		Card card = Card.builder()
+				.topRight(Pawn.BLUE)
+				.middleRight(Pawn.YELLOW)
+				.bottomLeft(Pawn.YELLOW)
+				.build();
+		
+		Player player = new Player();
+		
+		// Moving the top left yellow pawn one square to the right makes the card match
+		Move move = new Move(1, 0, 1, 1, card, player);
+		
+		game.makeMoveForPlayer(move);
+	}
+	
 	@Test
 	public void testMakeCorrectMoveOnBehalfOfPlayer() {
 		
@@ -44,7 +63,7 @@ public class GameMoveTest {
 				.bottomLeft(Pawn.YELLOW)
 				.build();
 		
-		Player player = new Player();
+		Player player = players.get(1);
 		
 		// Moving the top left yellow pawn one square to the right makes the card match
 		Move move = new Move(1, 0, 1, 1, card, player);
@@ -63,7 +82,7 @@ public class GameMoveTest {
 				.bottomLeft(Pawn.YELLOW)
 				.build();
 		
-		Player player = new Player();
+		Player player = players.get(1);
 		
 		// Moving the top left blue pawn one square below does not make the card match
 		Move move = new Move(0, 1, 1, 1, card, player);
@@ -82,7 +101,7 @@ public class GameMoveTest {
 				.bottomLeft(Pawn.YELLOW)
 				.build();
 		
-		Player player = new Player();
+		Player player = players.get(1);
 		
 		// Moving the top left yellow pawn one square to the right makes the card match
 		Move move = new Move(1, 0, 1, 1, card, player);
