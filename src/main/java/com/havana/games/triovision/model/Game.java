@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Game {
 
-	private int noOfPlayers;
+	private final int noOfPlayers;
 	private Board board;
 
 	List<Player> players;
@@ -26,6 +26,14 @@ public class Game {
 		board = new Board();
 		deck = new Deck();
 		openCards = new ArrayList<>();
+	}
+	
+	public Game(Board board, Deck deck, List<Card> openCards, List<Player> players) {
+		this.board = board;
+		this.deck = deck;
+		this.openCards = new ArrayList<>(openCards);
+		this.players = new ArrayList<>(players);
+		this.noOfPlayers = players.size();
 	}
 
 	private void initializePlayers() {
@@ -70,17 +78,20 @@ public class Game {
 		return ended;
 	}
 	
-	public boolean makeMoveForPlayer(int i, Card card, Board newBoard) {	
+	public boolean makeMoveForPlayer(Move move) {	
 		
 		if (ended) {
 			return false;
 		}
 		
+		Board newBoard = board.swap(move.fromX(), move.fromY(), move.toX(), move.toY());
+		Card card = move.getCard();
+		Player player = move.getPlayer();
+		
 		if (!newBoard.matches(card)) {
 			return false;
 		}
 		
-		Player player = getPlayer(i);
 		player.addWonCard(card);
 		openCards.remove(card);
 		

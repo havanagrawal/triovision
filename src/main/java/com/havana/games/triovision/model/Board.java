@@ -26,10 +26,9 @@ public class Board {
 	private Pawn[][] getBoardCopy() {
 		Pawn[][] boardCopy = new Pawn[BOARD_SIZE][BOARD_SIZE];
 		
+
 		for (int i = 0; i < BOARD_SIZE; i++) {
-			for (int j = 0; j < BOARD_SIZE; j++) {
-				boardCopy[i][j] = boardRepresentation[i][j];
-			}
+			boardCopy[i] = Arrays.copyOf(boardRepresentation[i], BOARD_SIZE);
 		}
 		
 		return boardCopy;
