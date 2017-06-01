@@ -144,12 +144,12 @@ public class Card {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
+		if (obj instanceof Card) {
+			Card that = (Card)obj;
+		
+			return Arrays.deepEquals(this.cardInfo, that.cardInfo);
 		}
 		
-		Card that = (Card)obj;
-		
-		return Arrays.deepEquals(this.cardInfo, that.cardInfo);
+		return false;
 	}
 }

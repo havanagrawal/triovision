@@ -25,5 +25,16 @@ public class Player {
 	public UUID getPlayerId() {
 		return playerId;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {	
+		if (obj instanceof Player) {
+			Player that = (Player)obj;
+			
+			return that.playerId.equals(this.playerId);
+		}
+		
+		return false;
+	}
 
 }
