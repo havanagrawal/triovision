@@ -6,10 +6,12 @@ import com.havana.games.triovision.exceptions.InvalidMoveException;
 
 public class Board {
 
+	private static final int BOARD_SIZE = 4; //Based on the fact that the board is square!
+
 	private Pawn[][] boardRepresentation;
 	
 	public Board() {
-		boardRepresentation = new Pawn[4][4];
+		boardRepresentation = new Pawn[BOARD_SIZE][BOARD_SIZE];
 		initialize();
 	}
 	
@@ -22,10 +24,10 @@ public class Board {
 	}
 
 	private Pawn[][] getBoardCopy() {
-		Pawn[][] boardCopy = new Pawn[4][4];
+		Pawn[][] boardCopy = new Pawn[BOARD_SIZE][BOARD_SIZE];
 		
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
 				boardCopy[i][j] = boardRepresentation[i][j];
 			}
 		}
@@ -34,8 +36,8 @@ public class Board {
 	}
 	
 	private void initialize() {
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
 				boardRepresentation[i][j] = Pawn.EMPTY;
 			}
 		}
@@ -114,11 +116,11 @@ public class Board {
 	}
 
 	private Pawn[][] rotateClockwise(Pawn[][] currentBoard) {
-		Pawn[][] rotated = new Pawn[4][4];
+		Pawn[][] rotated = new Pawn[BOARD_SIZE][BOARD_SIZE];
 		
-		for (int r = 0; r < 4; r++) {
-			for (int c = 0; c < 4; c++) {
-				rotated[c][4 - 1 - r] = currentBoard[r][c];
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
+				rotated[c][BOARD_SIZE - 1 - r] = currentBoard[r][c];
 			}
 		}
 		
@@ -164,8 +166,8 @@ public class Board {
 	
 	@SuppressWarnings("unused")
 	private void printBoard() {
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
 				System.out.print(boardRepresentation[i][j] + " ");
 			}
 			System.out.println();
