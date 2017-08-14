@@ -17,6 +17,9 @@ public class Game {
 	private boolean started = false;
 	private boolean ended = false;
 	
+	public static final int MIN_PLAYERS_IN_SINGLE_GAME = 2;
+	public static final int MAX_PLAYERS_IN_SINGLE_GAME = 4;
+	
 	public Game(int noOfPlayers) {
 		if (noOfPlayers < 2) {
 			throw new IllegalArgumentException("There must be at least 2 players for a TrioVision Game");
@@ -53,6 +56,10 @@ public class Game {
 		}
 
 		return players.get(i - 1);
+	}
+	
+	public List<Player> getPlayers() {
+		return new ArrayList<>(players);
 	}
 
 	public Board getBoard() {
