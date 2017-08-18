@@ -19,6 +19,21 @@ public class GameTest {
 		game = new Game(2);
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testGameIsNotInstantiableWithMoreThanMaxAllowedPlayers() {
+		new Game(Game.MAX_PLAYERS_IN_SINGLE_GAME + 1);
+	}
+	
+	@Test
+	public void testGameIsInstantiableWithMaxAllowedPlayers() {
+		new Game(Game.MAX_PLAYERS_IN_SINGLE_GAME);
+	}
+	
+	@Test
+	public void testGameIsIntantiableWithThreePlayers() {
+		new Game(3);
+	}
+	
 	@Test
 	public void testGameIsIntantiableWithTwoPlayers() {
 		new Game(2);
@@ -30,33 +45,18 @@ public class GameTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	public void testGameIsNotInstantiableWithLessThanMinRequiredPlayers() {
+		new Game(Game.MIN_PLAYERS_IN_SINGLE_GAME - 1);
+	}
+	
+	@Test
+	public void testGameIsInstantiableWithMinRequiredPlayers() {
+		new Game(Game.MIN_PLAYERS_IN_SINGLE_GAME);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
 	public void testGameIsNotInstantiableWithNegativePlayers() {
 		new Game(-1);
-	}
-
-	@Test
-	public void testGameReturnsPlayerByIndex() {
-		Player p = game.getPlayer(1);
-
-		assertThat(p, is(notNullValue()));
-	}
-
-	@Test
-	public void testGameReturnsSamePlayerForSameIndex() {
-		Player p1 = game.getPlayer(1);
-		Player p2 = game.getPlayer(1);
-
-		assertThat(p1, is(sameInstance(p2)));
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testGameThrowsExceptionForInvalidIndexForPlayer() {
-		game.getPlayer(3);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testGameThrowsExceptionForNegativeIndexForPlayer() {
-		game.getPlayer(-1);
 	}
 
 	@Test

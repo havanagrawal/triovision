@@ -2,11 +2,14 @@ package com.havana.games.triovision.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.havana.games.triovision.exceptions.InvalidPlayerException;
 
 public class Game {
 
+	private UUID gameId;
+	
 	private final int noOfPlayers;
 	private Board board;
 
@@ -20,17 +23,8 @@ public class Game {
 	public static final int MIN_PLAYERS_IN_SINGLE_GAME = 2;
 	public static final int MAX_PLAYERS_IN_SINGLE_GAME = 4;
 	
-	public Game(int noOfPlayers) {
-		if (noOfPlayers < 2) {
-			throw new IllegalArgumentException("There must be at least 2 players for a TrioVision Game");
-		}
-
-		this.noOfPlayers = noOfPlayers;
-		this.initializePlayers();
-		
-		board = new Board();
-		deck = new Deck();
-		openCards = new ArrayList<>();
+	public Game(int noOfPlayers) {	
+		this(new Board(), new Deck(), new ArrayList<>(), getNPlayers(noOfPlayers));
 	}
 	
 	public Game(Board board, Deck deck, List<Card> openCards, List<Player> players) {
@@ -39,23 +33,25 @@ public class Game {
 		this.openCards = new ArrayList<>(openCards);
 		this.players = new ArrayList<>(players);
 		this.noOfPlayers = players.size();
+		gameId = UUID.randomUUID();
+		
+		if (noOfPlayers < MIN_PLAYERS_IN_SINGLE_GAME) {
+			throw new IllegalArgumentException("There must be at least 2 players for a TrioVision Game");
+		}
+		
+		if (noOfPlayers > MAX_PLAYERS_IN_SINGLE_GAME) {
+			throw new IllegalArgumentException("There may be at most 4 players for a TrioVision Game");
+		}
 	}
 
-	private void initializePlayers() {
-		players = new ArrayList<>();
+	private static List<Player> getNPlayers(int noOfPlayers) {
+		List<Player> players = new ArrayList<>();
 
 		for (int i = 0; i < noOfPlayers; i++) {
 			players.add(new Player());
 		}
-	}
-
-	public Player getPlayer(int i) {
-
-		if (i > noOfPlayers || i <= 0) {
-			throw new IllegalArgumentException("Valid indices for players for this game are 1 to " + noOfPlayers);
-		}
-
-		return players.get(i - 1);
+		
+		return players;
 	}
 	
 	public List<Player> getPlayers() {
@@ -74,6 +70,10 @@ public class Game {
 		return new ArrayList<>(openCards);
 	}
 
+	public UUID getGameId() {
+		return gameId;
+	}
+	
 	public void start() {
 		if (!started) {
 			for (int i = 0; i < 12; i++) {
@@ -120,6 +120,11 @@ public class Game {
 	
 	private boolean isPlayerPartOfThisGame(Player player) {
 		return players.contains(player);
+	}
+
+	@Override
+	public String toString() {
+		return "Game [board=" + board + ", players=" + players + ", openCards=" + openCards + "]";
 	}
 	
 }
