@@ -17,22 +17,31 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
+        console.log('Connected: ' + frame);
         
         $.ajax({
             url: 'player',
             type: 'POST',
-            //data: 'ID=1&Name=John&Age=10', // or $('#myform').serializeArray()
             success: function(data, status) { 
             	console.log('POST completed');
             	console.log(data);
             	console.log(status);
+            	
+            	var playerId = data.playerId;
+            	
+            	console.log("Assigned player id: " + playerId);
+            	
+            	stompClient.subscribe('/topic/player-' + playerId, function (gameState) {
+            		console.log("Got message: " + gameState);
+            		console.log("JSON Content: " + gameState.body);
+            		showGameState(gameState.body);
+                    //showGreeting(JSON.parse(greeting.body).board);
+                });
             }
         });
         
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('user/topic/player', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
-        });
+        
+        
     });
 }
 
@@ -48,8 +57,53 @@ function sendName() {
     stompClient.send("/app/player", {user: 'havana'}, "Hello!");
 }
 
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+function showGameState(gameState) {
+    $("#gameState").append("<tr><td>" + gameState + "</td></tr>");
+    
+    var gameStateJson = JSON.parse(gameState);
+    
+    $("#gameState").append(makeGameStateTable(gameStateJson));
+    $("#gameState").append(getCards(gameStateJson.openCards));
+}
+
+function makeGameStateTable(gameState) {
+	
+	var htmlTableBoard = "";
+	
+	for (var i = 0; i < 4; i++) {
+		htmlTableBoard = htmlTableBoard + "<tr>";
+		for (var j = 0; j < 4; j++) {
+			htmlTableBoard = htmlTableBoard + "<td>" + gameState.board.board[i][j] + "</td>";			
+		}
+		htmlTableBoard = htmlTableBoard + "</tr>";
+	}
+	
+	return '<table border="1">' + htmlTableBoard + "</table>";
+}
+
+function getCards(cards) {
+	var htmlCards = "";
+	
+	for (var i = 0; i < cards.length; i++) {
+		var card = getCardTable(cards[i]["cardInfo"]);
+		htmlCards = htmlCards + "<td>" + card + "</td>";  
+	}
+	
+	return '<table border="1">' + htmlCards + "</table>";
+}
+
+function getCardTable(card) {
+	var htmlCard = "";
+	
+	for (var i = 0; i < 3; i++) {
+		htmlCard = htmlCard + "<tr>";
+		for (var j = 0; j < 2; j++) {
+			htmlCard = htmlCard + "<td>" + card[i][j] + "</td>";			
+		}
+		htmlCard = htmlCard + "</tr>";
+	}
+	
+	return '<table border="1">' + htmlCard + "</table>";
 }
 
 $(function () {
