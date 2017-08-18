@@ -1,48 +1,41 @@
 package com.havana.games.triovision.service;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.havana.games.triovision.model.Game;
-import com.havana.games.triovision.model.Player;
+import com.havana.games.triovision.notifier.PlayerNotifier;
 
 @Service
 public class LobbyListener {
 	private static Logger log = LoggerFactory.getLogger(LobbyListener.class);
 	
 	private Lobby lobby;
-	private SimpMessagingTemplate messagingTemplate;
+	private PlayerNotifier playerNotifier;
 	
 	@Autowired
-	public LobbyListener(Lobby lobby, SimpMessagingTemplate simpMessagingTemplate) {
+	public LobbyListener(Lobby lobby, PlayerNotifier playerNotifier) {
 		this.lobby = lobby;
-		this.messagingTemplate = simpMessagingTemplate;
+		this.playerNotifier = playerNotifier;
 		log.info("Starting up the lobby listener");
 	}
 	
-	@Scheduled(initialDelay = 30_000, fixedDelay = 120_000)
+	@Scheduled(initialDelay = 30_000, fixedDelay = 30_000)
 	public void tryToMakeGame() {
+		log.info("Current lobby: " + lobby);
+
 		try {
 			Game newGame = lobby.tryNewGame();
-			startUpGame(newGame);
+			newGame.start();
+			log.info("Created new game: " + newGame);
+			playerNotifier.notifyPlayers(newGame);
 		}
 		catch (IllegalStateException ise) {
 			log.info(ise.getMessage());
 		}
 	}
-	
-	private void startUpGame(Game game) {
-		
-		List<Player> players = game.getPlayers();
-		
-		for (Player p : players) {
-			messagingTemplate.convertAndSend("topic/" + p.getPlayerId(), game);
-		}
-	}
+
 }

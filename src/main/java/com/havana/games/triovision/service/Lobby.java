@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.havana.games.triovision.model.Game;
@@ -14,6 +16,8 @@ import com.havana.games.triovision.model.Player;
 
 @Component
 public class Lobby {
+	
+	private static Logger log = LoggerFactory.getLogger(Lobby.class);
 	
 	Map<UUID, Player> players = new HashMap<>();
 	
@@ -45,5 +49,10 @@ public class Lobby {
 	public List<Player> players() {
 		return new ArrayList<>(players.values());
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Lobby [players=" + players.values() + "]";
+	}
+
 }
