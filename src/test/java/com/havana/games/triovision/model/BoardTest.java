@@ -5,6 +5,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertFalse;
+
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -100,5 +103,17 @@ public class BoardTest {
 		Board shouldBeOriginal = newBoard.swap(1, 0, 1, 1);
 
 		assertThat(shouldBeOriginal, is(equalTo(board)));
+	}
+	
+	@Test
+	public void testGetBoardReturnsACopyOfTheBoard() {
+		Pawn[][] boardCopy = board.getBoard();
+		Pawn[][] secondBoardCopy = board.getBoard();
+		
+		for (int i = 0; i < boardCopy.length; i++) {
+			boardCopy[i] = new Pawn[]{Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY};			
+		}
+		 
+		assertFalse(Arrays.deepEquals(boardCopy, secondBoardCopy));
 	}
 }

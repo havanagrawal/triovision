@@ -23,6 +23,10 @@ public class Board {
 		boardRepresentation[x2][y2] = temp;
 	}
 
+	public Pawn[][] getBoard() {
+		return getBoardCopy();
+	}
+	
 	private Pawn[][] getBoardCopy() {
 		Pawn[][] boardCopy = new Pawn[BOARD_SIZE][BOARD_SIZE];
 		
