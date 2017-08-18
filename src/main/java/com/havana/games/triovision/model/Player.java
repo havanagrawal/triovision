@@ -37,4 +37,9 @@ public class Player {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return "Player [wonCards=" + wonCards + ", playerId=" + playerId + "]";
+	}
+	
 }
