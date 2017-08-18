@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Deck {
 
 	private static final List<Pawn> pawnSampleSpace = Collections.unmodifiableList(Arrays.asList(Pawn.BLUE, Pawn.BLUE, Pawn.RED, Pawn.RED, Pawn.GREEN, Pawn.GREEN, Pawn.YELLOW, Pawn.YELLOW));
@@ -26,7 +28,8 @@ public class Deck {
 		cards = new ArrayDeque<>(cardSet);
 	}
 	
-	public Card getNextCard() {
+	@JsonIgnore
+	protected Card getNextCard() {
 		return cards.pop();
 	}
 	
